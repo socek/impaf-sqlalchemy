@@ -7,6 +7,17 @@ from impaf.utils import cached
 
 class SqlalchemyRequestable(Requestable):
 
+    def feed_request(self, request):
+        super().feed_request(request)
+        self._generate_drivers()
+
+    def _generate_drivers(self):
+        pass
+
+    def feeded_driver(self, obj):
+        obj.feed_request(self.request)
+        return obj
+
     def _get_request_cls(self):
         return SqlalchemyRequest
 

@@ -45,16 +45,3 @@ class ModelDriver(Driver):
     def delete(self, obj):
         self.database().delete(obj)
 
-
-class DriverAbleMixin(object):
-
-    def feed_request(self, request):
-        self.request = request
-        self._generate_drivers()
-
-    def _generate_drivers(self):
-        pass
-
-    def feeded_driver(self, obj):
-        obj.feed_request(self.request)
-        return obj
