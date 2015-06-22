@@ -7,19 +7,18 @@ from impaf.utils import cached
 
 class SqlalchemyRequestable(Requestable):
 
-    def _unpack_request(self, request):
-        super()._unpack_request(request)
-        self.database = self.request.database
+    def _get_request_cls(self):
+        return SqlalchemyRequest
 
-    def _convert_request(self, request):
-        self.request = SqlalchemyRequest(request)
+    @property
+    def database(self):
+        return self.request.database
 
 
 class SqlalchemyRequest(ImpafRequest):
 
     @cached
     def database(self):
-        print('db')
         if self.settings['db']['type'] == 'sqlite':
             return self._get_sqlite_database()
         else:
