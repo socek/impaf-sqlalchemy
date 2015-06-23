@@ -4,26 +4,28 @@ from impaf.requestable import Requestable
 from impaf.requestable import ImpafRequest
 from impaf.utils import cached
 
+from .driver import DriverHolder
+
 
 class SqlalchemyRequestable(Requestable):
 
     def feed_request(self, request):
         super().feed_request(request)
-        self._generate_drivers()
-
-    def _generate_drivers(self):
-        pass
-
-    def feeded_driver(self, obj):
-        obj.feed_request(self.request)
-        return obj
-
-    def _get_request_cls(self):
-        return SqlalchemyRequest
+        self.generate_drivers()
 
     @property
     def database(self):
         return self.request.database
+
+    def generate_drivers(self):
+        self.drivers = self._get_driver_holder_cls()(self.database)
+        self.drivers.generate_drivers()
+
+    def _get_request_cls(self):
+        return SqlalchemyRequest
+
+    def _get_driver_holder_cls(self):
+        return DriverHolder
 
 
 class SqlalchemyRequest(ImpafRequest):

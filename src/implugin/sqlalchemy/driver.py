@@ -3,16 +3,12 @@ from sqlalchemy.orm.exc import NoResultFound
 
 class Driver(object):
 
-    def feed_request(self, request):
-        self.request = request
+    def feed_database(self, database):
+        self.database = database
 
     @property
     def query(self):
         return self.database().query
-
-    @property
-    def database(self):
-        return self.request.database
 
 
 class ModelDriver(Driver):
@@ -45,3 +41,15 @@ class ModelDriver(Driver):
     def delete(self, obj):
         self.database().delete(obj)
 
+
+class DriverHolder(object):
+
+    def __init__(self, database):
+        self.database = database
+
+    def feeded_driver(self, obj):
+        obj.feed_database(self.database)
+        return obj
+
+    def generate_drivers(self):
+        pass
