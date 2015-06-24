@@ -28,7 +28,12 @@ class SqlalchemyRequestable(Requestable):
         return DriverHolder
 
 
-class SqlalchemyRequest(ImpafRequest):
+class DatabaseConnection(object):
+
+    def init(self, settings, registry):
+        self.settings = settings
+        self.registry = registry
+        self._cache = {}
 
     @cached
     def database(self):
@@ -45,3 +50,7 @@ class SqlalchemyRequest(ImpafRequest):
         db = self.registry['db']
         db.expire_all()
         return db
+
+
+class SqlalchemyRequest(ImpafRequest, DatabaseConnection):
+    pass
