@@ -18,21 +18,10 @@ class SqlAlchemyApplication(Application):
                 )
             return value % obj
 
-        def morf_main_sql_url(obj, url):
-            if obj['type'] == 'sqlite':
-                return 'sqlite:///%(paths:sqlite_db)s' % obj
-            else:
-                return (
-                    '%(type)s://%(login)s:%(password)s@%(host)s:%(port)s'
-                    '/postgres'
-                    % obj
-                )
         super()._populte_default_settings()
         dbsettings = StringDict()
         dbsettings['url'] = ''
         dbsettings.set_morf('url', morf_sql_url)
-        dbsettings['mainurl'] = ''
-        dbsettings.set_morf('mainurl', morf_main_sql_url)
         self.settings['db'] = dbsettings
 
     def _generate_registry(self, registry):
