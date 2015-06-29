@@ -15,7 +15,7 @@ class ModelDriver(Driver):
 
     def upsert(self, **kwargs):
         try:
-            return self.query(self.model).filter_by(**kwargs).one()
+            return self.find_by(**kwargs).one()
         except NoResultFound:
             return self.create(**kwargs)
 

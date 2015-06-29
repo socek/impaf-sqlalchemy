@@ -26,3 +26,20 @@ class SqlalchemyControllerFixture(
     @fixture
     def mdrivers(self):
         return MagicMock()
+
+
+class DriverFixture(object):
+
+    @fixture
+    def mdatabase(self):
+        return MagicMock()
+
+    @fixture
+    def query(self, mdatabase):
+        return mdatabase().query
+
+    @fixture
+    def driver(self, mdatabase):
+        driver = self._cls_driver()()
+        driver.feed_database(mdatabase)
+        return driver
