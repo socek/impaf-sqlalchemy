@@ -18,14 +18,9 @@ class SqlalchemyControllerFixture(
 ):
 
     @fixture
-    def controller(self, root_factory, mrequest, context, mdrivers):
-        controller = super().controller(root_factory, mrequest, context)
-        controller.drivers = mdrivers
-        return controller
-
-    @fixture
-    def mdrivers(self):
-        return MagicMock()
+    def mdrivers(self, testable):
+        testable.drivers = MagicMock()
+        return testable.drivers
 
 
 class DriverFixture(object):
