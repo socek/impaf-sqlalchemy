@@ -10,6 +10,9 @@ class Driver(object):
     def query(self):
         return self.database().query
 
+    def bind_engine(self, engine, metadata_list):
+        pass
+
 
 class ModelDriver(Driver):
 
@@ -41,14 +44,19 @@ class ModelDriver(Driver):
     def delete(self, obj):
         self.database().delete(obj)
 
+    def _append_metadata(self, metadatas):
+        metadatas.add(self.model.metadata)
+
 
 class DriverHolder(object):
 
     def __init__(self, database):
         self.database = database
+        self._drivers = []
 
     def feeded_driver(self, obj):
         obj.feed_database(self.database)
+        self._drivers.append(obj)
         return obj
 
     def generate_drivers(self):
