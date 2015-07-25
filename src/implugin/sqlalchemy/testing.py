@@ -11,16 +11,17 @@ class SqlalchemyRequestFixture(RequestFixture):
     def mdatabase(self, request):
         return MagicMock()
 
+    @fixture
+    def mdrivers(self, testable):
+        testable.drivers = MagicMock()
+        return testable.drivers
+
 
 class SqlalchemyControllerFixture(
     SqlalchemyRequestFixture,
     ControllerFixture,
 ):
-
-    @fixture
-    def mdrivers(self, testable):
-        testable.drivers = MagicMock()
-        return testable.drivers
+    pass
 
 
 class DriverFixture(object):
