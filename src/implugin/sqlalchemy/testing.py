@@ -8,8 +8,9 @@ from impaf.testing import RequestFixture, ControllerFixture
 class SqlalchemyRequestFixture(RequestFixture):
 
     @fixture
-    def mdatabase(self, request):
-        return MagicMock()
+    def mdatabase(self, mrequest):
+        mrequest.database = MagicMock()
+        return mrequest.database
 
     @fixture
     def mdrivers(self, testable):
