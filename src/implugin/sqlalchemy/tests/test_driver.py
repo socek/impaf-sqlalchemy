@@ -106,3 +106,11 @@ class TestModelDriver(DriverFixture):
         mdatabase.return_value.delete.assert_called_once_with(
             mget_by_id.return_value,
         )
+
+    def test_append_metadata(self, driver):
+        driver.model = MagicMock()
+        metadatas = set()
+
+        driver._append_metadata(metadatas)
+
+        assert metadatas == set([driver.model.metadata])

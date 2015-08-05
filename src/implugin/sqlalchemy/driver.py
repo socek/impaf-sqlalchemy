@@ -10,9 +10,6 @@ class Driver(object):
     def query(self):
         return self.database().query
 
-    def bind_engine(self, engine, metadata_list):
-        pass
-
 
 class ModelDriver(Driver):
 
