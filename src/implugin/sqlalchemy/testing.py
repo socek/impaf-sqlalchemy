@@ -2,7 +2,10 @@ from mock import MagicMock
 
 from pytest import fixture
 
-from impaf.testing import RequestFixture, ControllerFixture
+from impaf.testing import RequestCase
+from impaf.testing import ControllerFixture
+from impaf.testing import RequestFixture
+from impaf.testing import cache
 
 
 class SqlalchemyRequestFixture(RequestFixture):
@@ -40,3 +43,14 @@ class DriverFixture(object):
         driver = self._cls_driver()()
         driver.feed_database(mdatabase)
         return driver
+
+
+class SqlalchemyCase(RequestCase):
+
+    @cache
+    def mdatabase(self):
+        return self.mrequest().database
+
+    @cache
+    def mdrivers(self):
+        return self.pobject(self.object(), 'drivers')
