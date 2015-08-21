@@ -52,9 +52,7 @@ class DriverHolder(object):
         self._drivers = []
 
     def feeded_driver(self, obj):
-        obj.feed_database(self.database)
-        self._drivers.append(obj)
+        if obj not in self._drivers:
+            obj.feed_database(self.database)
+            self._drivers.append(obj)
         return obj
-
-    def generate_drivers(self):
-        pass

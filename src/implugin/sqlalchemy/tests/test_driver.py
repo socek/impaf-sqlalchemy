@@ -2,9 +2,11 @@ from mock import MagicMock
 from mock import patch
 from mock import sentinel
 
+from pytest import fixture
 from pytest import yield_fixture
 from sqlalchemy.orm.exc import NoResultFound
 
+from ..driver import DriverHolder
 from ..driver import ModelDriver
 from ..testing import DriverFixture
 
@@ -114,3 +116,23 @@ class TestModelDriver(DriverFixture):
         driver._append_metadata(metadatas)
 
         assert metadatas == set([driver.model.metadata])
+
+
+class TestDriverHolder(DriverFixture):
+
+    @fixture
+    def testable(self, mdatabase):
+        return DriverHolder(mdatabase)
+
+    def test_feeded_driver_simple(self, testable, mdatabase):
+        obj = MagicMock()
+        assert testable.feeded_driver(obj) == obj
+        obj.feed_database.assert_called_once_with(mdatabase)
+        assert obj in testable._drivers
+
+    def test_feeded_driver_second(self, testable, mdatabase):
+        obj = MagicMock()
+        assert testable.feeded_driver(obj) == obj
+        assert testable.feeded_driver(obj) == obj
+        obj.feed_database.assert_called_once_with(mdatabase)
+        assert obj in testable._drivers

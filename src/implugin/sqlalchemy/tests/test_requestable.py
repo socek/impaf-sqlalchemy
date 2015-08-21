@@ -6,7 +6,6 @@ from pytest import yield_fixture
 
 from impaf.testing import RequestFixture
 
-from ..driver import DriverHolder
 from ..requestable import DatabaseConnection
 from ..requestable import SqlalchemyRequest
 from ..requestable import SqlalchemyRequestable
@@ -20,9 +19,6 @@ class TestSqlalchemyRequestable(RequestFixture):
 
     def test_get_request_cls(self, requestable):
         requestable._get_request_cls() is SqlalchemyRequest
-
-    def test_get_driver_holder_cls(self, requestable):
-        requestable._get_driver_holder_cls() is DriverHolder
 
 
 class TestDatabaseConnection(RequestFixture):

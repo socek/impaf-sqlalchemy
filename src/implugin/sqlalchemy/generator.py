@@ -12,7 +12,6 @@ class DataGenerator(object):
     def feed_database(self, database):
         self.database = database
         self.drivers = self._get_driver_cls()(self.database)
-        self.drivers.generate_drivers()
 
     def create_all(self):
         self.make_all()
