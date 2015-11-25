@@ -1,7 +1,6 @@
 from sqlalchemy.orm import sessionmaker
 
 from impaf.requestable import Requestable
-from impaf.requestable import ImpafRequest
 from impaf.utils import cached
 
 from .driver import DriverHolder
@@ -15,25 +14,21 @@ class SqlalchemyRequestable(Requestable):
         super().feed_request(request)
         self.generate_drivers()
 
-    @property
+    @cached
     def database(self):
-        return self.request.database
+        connection = DatabaseConnection(self.settings, self.registry)
+        return connection.database()
 
     def generate_drivers(self):
         self.drivers = self.DRIVER_HOLDER_CLS(self.database)
 
-    def _get_request_cls(self):
-        return SqlalchemyRequest
-
 
 class DatabaseConnection(object):
 
-    def init(self, settings, registry):
+    def __init__(self, settings, registry):
         self.settings = settings
         self.registry = registry
-        self._cache = {}
 
-    @cached
     def database(self):
         if self.settings['db']['type'] == 'sqlite':
             return self._get_sqlite_database()
@@ -48,7 +43,3 @@ class DatabaseConnection(object):
         db = self.registry['db']
         db.expire_all()
         return db
-
-
-class SqlalchemyRequest(ImpafRequest, DatabaseConnection):
-    pass
