@@ -44,6 +44,10 @@ class ModelDriver(Driver):
     def _append_metadata(self, metadatas):
         metadatas.add(self.model.metadata)
 
+    def update(self, instance):
+        self.database().merge(instance)
+        self.database().flush()
+
 
 class DriverHolder(object):
 

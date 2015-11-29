@@ -16,8 +16,12 @@ class SqlalchemyRequestable(Requestable):
 
     @cached
     def database(self):
-        connection = DatabaseConnection(self.settings, self.registry)
-        return connection.database()
+        try:
+            return self.request._database
+        except AttributeError:
+            connection = DatabaseConnection(self.settings, self.registry)
+            self.request._database = connection.database()
+            return self.request._database
 
     def generate_drivers(self):
         self.drivers = self.DRIVER_HOLDER_CLS(self.database)
