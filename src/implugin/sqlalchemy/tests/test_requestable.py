@@ -7,18 +7,6 @@ from pytest import yield_fixture
 from impaf.testing import RequestFixture
 
 from ..requestable import DatabaseConnection
-from ..requestable import SqlalchemyRequest
-from ..requestable import SqlalchemyRequestable
-
-
-class TestSqlalchemyRequestable(RequestFixture):
-
-    @fixture
-    def requestable(self, request):
-        return SqlalchemyRequestable()
-
-    def test_get_request_cls(self, requestable):
-        requestable._get_request_cls() is SqlalchemyRequest
 
 
 class TestDatabaseConnection(RequestFixture):
@@ -26,8 +14,7 @@ class TestDatabaseConnection(RequestFixture):
     @fixture
     def obj(self, settings, registry):
         settings['db'] = {}
-        connection = DatabaseConnection()
-        connection.init(settings, registry)
+        connection = DatabaseConnection(settings, registry)
         return connection
 
     @yield_fixture

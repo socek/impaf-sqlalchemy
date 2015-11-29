@@ -49,7 +49,7 @@ class SqlalchemyCase(RequestCase):
 
     @cache
     def mdatabase(self):
-        return self.mrequest().database
+        return self.pobject(self.object(), 'database')
 
     @cache
     def mdrivers(self):
