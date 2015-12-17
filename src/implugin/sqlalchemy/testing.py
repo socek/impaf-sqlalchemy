@@ -86,6 +86,8 @@ class DriverCase(object):
         driver.feed_database(self.database)
         return driver
 
-    def flush_table_from_object(self, obj):
-        obj.metadata.create_all(self.registry()['db_engine'])
-        self.database().query(obj).delete()
+    def flush_table_from_object(self, *args):
+        engine = self.registry()['db_engine']
+        for obj in args:
+            obj.metadata.create_all(engine)
+            self.database().query(obj).delete()
